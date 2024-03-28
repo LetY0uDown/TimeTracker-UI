@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:icon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+        xmlns:vm="clr-namespace:TimeTracker.UI.Core.ViewModels"
         mc:Ignorable="d"
-        Title="Time Tracker" Height="650" Width="1080"
+        Title="Time Tracker" Height="650" Width="450"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize">
+    
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    
     <Border>
         <Grid>
             <Grid.RowDefinitions>
@@ -15,12 +21,14 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
+            <!-- Title bar -->
             <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" Background="{DynamicResource Secondary}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18*"/>
+                    <ColumnDefinition Width="6*"/>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                
                 <TextBlock Text="Time Tracker" Foreground="{DynamicResource Foreground}"
                            FontWeight="DemiBold" VerticalAlignment="Center" Margin="10 0"
                            FontSize="20"/>
@@ -41,7 +49,12 @@
             </Grid>
 
             <Grid Grid.Row="1" Background="{DynamicResource Background}">
-                
+                <Frame Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" />
+
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                        Content="Создать задачу" Margin="0 0 0 25"
+                        Command="{Binding CreateTaskCommand}"
+                        Visibility="{Binding CreateTaskVisibility}"/>
             </Grid>
 
         </Grid>

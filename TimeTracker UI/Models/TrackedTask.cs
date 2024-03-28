@@ -12,5 +12,9 @@ public class TrackedTask
 
     public bool IsDone { get; set; }
 
+    public bool IsPaused { get; set; }
+
+    public DateTime? StartedAt { get; set; }
+
     public List<Interval>? Intervals { get; set; } = null;
 }
