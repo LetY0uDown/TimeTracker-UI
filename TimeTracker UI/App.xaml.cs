@@ -1,12 +1,13 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using TimeTracker.UI.Views;
 
-namespace TimeTracker_UI;
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
+namespace TimeTracker.UI;
+
 public partial class App : Application
 {
+    private void Application_Startup (object sender, StartupEventArgs e)
+    {
+        Current.MainWindow = new MainWindow ();
+        Current.MainWindow.Show ();
+    }
 }
-
