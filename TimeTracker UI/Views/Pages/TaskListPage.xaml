@@ -6,11 +6,8 @@
       xmlns:vm="clr-namespace:TimeTracker.UI.Core.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="450"
-      Title="TaskListPage">
-
-    <Page.DataContext>
-        <vm:TaskListViewModel />
-    </Page.DataContext>
+      Title="TaskListPage"
+      d:DataContext="{d:DesignInstance Type={x:Type vm:TaskListViewModel}}">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,9 +31,15 @@
                      Style="{StaticResource MaterialDesignTabRadioButton}"/>
 
         <ListBox Grid.Row="1" Grid.ColumnSpan="2"
+                 HorizontalContentAlignment="Stretch"
                  ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}"
-                 ItemTemplate="{StaticResource TaskItemTemplate}">
-            
+                 ItemTemplate="{StaticResource TaskItemTemplate}"
+                 SelectedItem="{Binding SelectedTask}">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Смотреть" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
 
     </Grid>

@@ -1,11 +1,13 @@
 ﻿using System.Windows;
+using TimeTracker.UI.Core.ViewModels;
 
 namespace TimeTracker.UI.Views;
 
 public partial class MainWindow : Window
 {
-    public MainWindow ()
+    public MainWindow (NavigationViewModel viewModel)
     {
+        DataContext = viewModel;
         InitializeComponent();
     }
 

@@ -17,4 +17,6 @@ public class TrackedTask
     public DateTime? StartedAt { get; set; }
 
     public List<Interval>? Intervals { get; set; } = null;
+
+    public bool HasPlannedTime => PlannedTime is not null and > 0;
 }

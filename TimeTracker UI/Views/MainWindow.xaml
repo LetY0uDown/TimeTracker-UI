@@ -8,11 +8,8 @@
         mc:Ignorable="d"
         Title="Time Tracker" Height="650" Width="450"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None" ResizeMode="NoResize">
-    
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
+        WindowStyle="None" ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:NavigationViewModel}}">
     
     <Border>
         <Grid>
@@ -50,11 +47,6 @@
 
             <Grid Grid.Row="1" Background="{DynamicResource Background}">
                 <Frame Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" />
-
-                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                        Content="Создать задачу" Margin="0 0 0 25"
-                        Command="{Binding CreateTaskCommand}"
-                        Visibility="{Binding CreateTaskVisibility}"/>
             </Grid>
 
         </Grid>

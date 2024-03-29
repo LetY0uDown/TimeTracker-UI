@@ -7,9 +7,13 @@ internal sealed class TicksToTimeConverter : IValueConverter
 {
     public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
     {
+        if (value is null) {
+            return string.Empty;
+        }
+
         var ticks = (long)value;
 
-        return TimeSpan.FromTicks (ticks).ToString("HH:mm");
+        return TimeSpan.FromTicks (ticks).ToString();
     }
 
     public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
