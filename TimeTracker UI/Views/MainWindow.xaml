@@ -6,7 +6,7 @@
         xmlns:icon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
         xmlns:vm="clr-namespace:TimeTracker.UI.Core.ViewModels"
         mc:Ignorable="d"
-        Title="Time Tracker" Height="650" Width="450"
+        Title="Time Tracker" Height="650" Width="850"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type={x:Type vm:NavigationViewModel}}">
@@ -21,7 +21,7 @@
             <!-- Title bar -->
             <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" Background="{DynamicResource Secondary}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="13*"/>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>

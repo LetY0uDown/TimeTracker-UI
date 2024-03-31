@@ -26,7 +26,7 @@ public partial class App : Application
     private static IHost ConfigureHosting ()
     {
         var builder = new ConfigurationBuilder()
-                          .SetBasePath(Directory.GetCurrentDirectory() + "/Resources/")
+                          .SetBasePath(Directory.GetCurrentDirectory() + "/../../../Resources/")
                           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         var config = builder.Build();
 

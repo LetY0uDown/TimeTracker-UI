@@ -37,7 +37,7 @@
                  SelectedItem="{Binding SelectedTask}">
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Смотреть" />
+                    <MenuItem Header="Смотреть" Command="{Binding ShowSelectedTask}"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>

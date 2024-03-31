@@ -11,12 +11,14 @@ internal static class ServiceCollectionExtension
     internal static void AddServices (this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<APIClient>();
+        serviceCollection.AddSingleton<NavigationService>();
     }
 
     internal static void AddViewModels (this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<NavigationViewModel>();
         serviceCollection.AddSingleton<TaskListViewModel>();
+        serviceCollection.AddSingleton<TaskInfoViewModel>();
     }
 
     internal static void AddViews(this IServiceCollection serviceCollection)

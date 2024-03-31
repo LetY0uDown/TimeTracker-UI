@@ -3,13 +3,81 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:icon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
       xmlns:vm="clr-namespace:TimeTracker.UI.Core.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="450"
+      d:DesignHeight="650" d:DesignWidth="850"
       Title="TaskInfoPage"
       d:DataContext="{d:DesignInstance Type={x:Type vm:TaskInfoViewModel}}">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15">
+            <icon:MaterialIcon Kind="ArrowBack"/>
+        </Button>
         
+        <!-- Task -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="6*"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+                
+            <!-- Task info -->
+            <Border Background="{DynamicResource LightBackground}"
+                    Margin="10" CornerRadius="10"
+                    Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="{Binding CurrentTask.Title}" HorizontalAlignment="Center"
+                               Margin="0 20 0 0" FontSize="32"
+                               Foreground="{DynamicResource Foreground}"
+                               FontWeight="DemiBold"/>
+
+                    <TextBlock Text="{Binding CurrentTask.Description}"
+                               Foreground="{DynamicResource Foreground}"
+                               Margin="15" Grid.Row="1"
+                               FontSize="18" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
+
+            <ToggleButton Grid.Row="2" Margin="20 10"
+                          Content="Начать" Style="{StaticResource MaterialDesignRaisedButton}"
+                          Click="StartButtonClick" BorderThickness="0"/>
+                
+            <Button Grid.Row="2" Grid.Column="1" Margin="20 10"
+                    Content="Выполнено" Background="{DynamicResource Success}" BorderThickness="0"/>
+
+        </Grid>
+
+        <!-- Intervals -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Остановки" VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="32" Foreground="{DynamicResource Foreground}"
+                       FontWeight="DemiBold"/>
+            
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding CurrentTask.Intervals}"/>
+        </Grid>
     </Grid>
 </Page>

@@ -7,14 +7,14 @@ namespace TimeTracker.UI.Core.Services;
 
 public sealed class NavigationService
 {
-    private readonly NavigationViewModel _navigation;
-
-    public NavigationService (NavigationViewModel navigation)
-    {
-        _navigation = navigation;
-    }
+    private NavigationViewModel _navigation = null!;
 
     public Window MainWindow { get; private set; } = null!;
+
+    public void RegisterHost(NavigationViewModel viewModel)
+    {
+        _navigation = viewModel;
+    }
 
     public void SetMainWindow<T>() where T : Window
     {

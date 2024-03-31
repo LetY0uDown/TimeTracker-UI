@@ -13,6 +13,7 @@ public sealed class TaskListViewModel : ViewModel
     {
         _client = client;
         _navigation = navigation;
+
         Task.Run(async () => {
             Tasks = await _client.GetAsync<List<TrackedTask>>("Tasks");
         });

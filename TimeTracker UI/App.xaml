@@ -10,8 +10,11 @@
             <SolidColorBrush x:Key="Accent"     Color="#888ea4"/>
 
             <SolidColorBrush x:Key="Danger"     Color="#b47496"/>
+            <SolidColorBrush x:Key="Success"    Color="#24dc56"/>
 
             <SolidColorBrush x:Key="Background" Color="#252628"/>
+            <SolidColorBrush x:Key="LightBackground" Color="#303133"/>
+            
             <SolidColorBrush x:Key="Foreground" Color="#e4e4e4"/>
             <SolidColorBrush x:Key="DarkForeground" Color="#252628"/>
 
