@@ -20,12 +20,12 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <RadioButton Content="К Выполнению" Margin="5" IsChecked="True"
+        <RadioButton Content="К Выполнению" Margin="10 5" IsChecked="True"
                      Foreground="{DynamicResource Foreground}"
                      Command="{Binding ShowTrackedTasksCommand}"
                      Style="{StaticResource MaterialDesignTabRadioButton}"/>
         
-        <RadioButton Content="Завершённые" Grid.Column="1" Margin="5"
+        <RadioButton Content="Завершённые" Grid.Column="1" Margin="10 5"
                      Foreground="{DynamicResource Foreground}"
                      Command="{Binding ShowFinishedTasksCommand}"
                      Style="{StaticResource MaterialDesignTabRadioButton}"/>
@@ -34,7 +34,8 @@
                  HorizontalContentAlignment="Stretch"
                  ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}"
                  ItemTemplate="{StaticResource TaskItemTemplate}"
-                 SelectedItem="{Binding SelectedTask}">
+                 SelectedItem="{Binding SelectedTask}"
+                 SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Смотреть" Command="{Binding ShowSelectedTask}"/>

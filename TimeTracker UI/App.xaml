@@ -22,7 +22,8 @@
                 
                 <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#23b5dc" SecondaryColor="#4442ad" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-                
+
+                <ResourceDictionary Source="pack://application:,,,/Resources/TimestampItemTemplate.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Resources/TaskItemTemplate.xaml" />
 
             </ResourceDictionary.MergedDictionaries>

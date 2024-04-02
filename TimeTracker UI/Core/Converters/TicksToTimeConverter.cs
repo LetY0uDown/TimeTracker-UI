@@ -11,9 +11,16 @@ internal sealed class TicksToTimeConverter : IValueConverter
             return string.Empty;
         }
 
-        var ticks = (long)value;
+        bool.TryParse(parameter?.ToString(), out var isFullDateTime);
 
-        return TimeSpan.FromTicks (ticks).ToString();
+        var ticks = (long)value;
+        var dateTime = new DateTime(ticks);
+
+        if (isFullDateTime == true) {
+            return dateTime.ToString();
+        }
+
+        return dateTime.TimeOfDay.ToString();
     }
 
     public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

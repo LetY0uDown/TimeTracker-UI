@@ -17,7 +17,8 @@
         </Grid.ColumnDefinitions>
 
         <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
-                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15">
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15"
+                Command="{Binding ReturnCommand}">
             <icon:MaterialIcon Kind="ArrowBack"/>
         </Button>
         
@@ -77,7 +78,8 @@
                        FontSize="32" Foreground="{DynamicResource Foreground}"
                        FontWeight="DemiBold"/>
             
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding CurrentTask.Intervals}"/>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Timestamps}"
+                          ItemTemplate="{StaticResource TimestampTemplate}"/>
         </Grid>
     </Grid>
 </Page>

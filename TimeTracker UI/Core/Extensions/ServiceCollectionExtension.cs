@@ -18,7 +18,7 @@ internal static class ServiceCollectionExtension
     {
         serviceCollection.AddSingleton<NavigationViewModel>();
         serviceCollection.AddSingleton<TaskListViewModel>();
-        serviceCollection.AddSingleton<TaskInfoViewModel>();
+        serviceCollection.AddTransient<TaskInfoViewModel>();
     }
 
     internal static void AddViews(this IServiceCollection serviceCollection)

@@ -16,6 +16,12 @@ public partial class TaskInfoPage : Page
         InitializeComponent();
     }
 
+    protected override void OnRender (DrawingContext drawingContext)
+    {
+        var vm = DataContext as TaskInfoViewModel;
+        vm.CurrentTask = App.CurrentTask;
+    }
+
     private void StartButtonClick (object sender, RoutedEventArgs e)
     {
         var button = (sender as ToggleButton)!;

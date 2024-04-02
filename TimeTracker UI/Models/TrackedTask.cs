@@ -14,9 +14,7 @@ public class TrackedTask
 
     public bool IsPaused { get; set; }
 
-    public DateTime? StartedAt { get; set; }
+    public bool HasPlannedTime => PlannedTime is not null;
 
-    public List<Interval>? Intervals { get; set; } = null;
-
-    public bool HasPlannedTime => PlannedTime is not null and > 0;
+    public List<Timestamp> Timestamps { get; set; } = new List<Timestamp>();
 }
