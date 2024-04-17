@@ -34,8 +34,7 @@
                  HorizontalContentAlignment="Stretch"
                  ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}"
                  ItemTemplate="{StaticResource TaskItemTemplate}"
-                 SelectedItem="{Binding SelectedTask}"
-                 SelectionChanged="ListBox_SelectionChanged">
+                 SelectedItem="{Binding SelectedTask}">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Смотреть" Command="{Binding ShowSelectedTask}"/>

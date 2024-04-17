@@ -15,10 +15,6 @@ public sealed class TaskListViewModel : ViewModel
         _client = client;
         _navigation = navigation;
 
-        Task.Run(async () => {
-            Tasks = await _client.GetAsync<List<TrackedTask>>("Tasks");
-        });
-
         ShowTrackedTasksCommand = new(async () => {
             Tasks = await _client.GetAsync<List<TrackedTask>>("Tasks");
         });
@@ -41,4 +37,11 @@ public sealed class TaskListViewModel : ViewModel
     public TrackedTask? SelectedTask { get; set; }
 
     public List<TrackedTask>? Tasks { get; set; }
+
+    public override void Display ()
+    {
+        Task.Run(async () => {
+            Tasks = await _client.GetAsync<List<TrackedTask>>("Tasks");
+        });
+    }
 }

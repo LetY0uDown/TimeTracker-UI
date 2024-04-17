@@ -5,7 +5,7 @@
 
     <converter:TicksToTimeConverter x:Key="TicksToTime" />
 
-    <DataTemplate DataType="{x:Type model:Timestamp}" x:Key="TimestampTemplate">
+    <DataTemplate DataType="{x:Type model:TaskAction}" x:Key="ActionTemplate">
         <Grid HorizontalAlignment="Stretch" Margin="15">
             <StackPanel>
                 <TextBlock Text="{Binding CreatedAt, Converter={StaticResource TicksToTime}, ConverterParameter=true}"

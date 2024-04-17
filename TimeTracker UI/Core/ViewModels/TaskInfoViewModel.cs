@@ -15,10 +15,6 @@ public sealed class TaskInfoViewModel : ViewModel
         _client = client;
         _navigation = navigation;
 
-        Task.Run(async () => {
-            Timestamps = (await _client.GetAsync<List<Timestamp>>($"Tasks/{CurrentTask.Id}/timestamps"))!;
-        });
-
         FinishTaskCommand = new(async () => {
             await _client.PutAsync($"Tasks/{CurrentTask.Id}/finish");
         });
@@ -38,9 +34,10 @@ public sealed class TaskInfoViewModel : ViewModel
             StartStopCommand = PauseTaskCommand;
         });
 
-        StartStopCommand = CurrentTask.Timestamps.Count == 0 ? StartTaskCommand
-                                                             : CurrentTask.IsPaused ? ResumeTaskCommand
-                                                                                    : PauseTaskCommand;
+        // TODO: Do something with it
+        //StartStopCommand = CurrentTask.Timestamps.Count == 0 ? StartTaskCommand
+        //                                                     : CurrentTask.IsPaused ? ResumeTaskCommand
+        //                                                                            : PauseTaskCommand;
 
         ReturnCommand = new(() => {
             _navigation.SetPage<TaskListPage>();
@@ -57,5 +54,12 @@ public sealed class TaskInfoViewModel : ViewModel
     public UICommand ReturnCommand { get; private set; }
 
     public TrackedTask CurrentTask { get; set; } = new();
-    public List<Timestamp> Timestamps { get; private set; }
+    public List<TaskAction> Actions { get; private set; }
+
+    public override void Display ()
+    {
+        Task.Run(async () => {
+            Actions = (await _client.GetAsync<List<TaskAction>>($"Tasks/{CurrentTask.Id}/actions"))!;
+        });
+    }
 }

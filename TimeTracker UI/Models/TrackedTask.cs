@@ -1,6 +1,6 @@
 ﻿namespace TimeTracker.UI.Models;
 
-public class TrackedTask
+public sealed class TrackedTask
 {
     public int Id { get; set; }
 
@@ -10,9 +10,10 @@ public class TrackedTask
 
     public long? PlannedTime { get; set; }
 
+    // prob temporary
+    public bool HasPlannedTime => PlannedTime != null;
+
     public bool IsDone { get; set; }
 
-    public bool HasPlannedTime => PlannedTime is not null;
-
-    public List<Timestamp> Timestamps { get; set; } = new List<Timestamp>();
+    public List<TaskAction> Actions { get; set; } = new List<TaskAction>();
 }

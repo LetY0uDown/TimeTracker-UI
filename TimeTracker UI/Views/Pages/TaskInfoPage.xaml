@@ -78,8 +78,8 @@
                        FontSize="32" Foreground="{DynamicResource Foreground}"
                        FontWeight="DemiBold"/>
             
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Timestamps}"
-                          ItemTemplate="{StaticResource TimestampTemplate}"/>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Actions}"
+                          ItemTemplate="{StaticResource ActionTemplate}"/>
         </Grid>
     </Grid>
 </Page>
