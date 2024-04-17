@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
 using TimeTracker.UI.Core.Extensions;
+using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Views;
 
@@ -19,7 +20,7 @@ public partial class App : Application
     {
         Host = ConfigureHosting();
         
-        var navigation = Host.Services.GetService<Core.Services.NavigationService>()!;
+        var navigation = Host.Services.GetService<NavigationService>()!;
         navigation.SetMainWindow<MainWindow>();
     }
 

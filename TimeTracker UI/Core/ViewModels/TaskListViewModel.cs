@@ -1,4 +1,5 @@
-﻿using TimeTracker.UI.Core.Services;
+﻿using TimeTracker.UI.Core.Navigation;
+using TimeTracker.UI.Core.Services;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Views.Pages;
 

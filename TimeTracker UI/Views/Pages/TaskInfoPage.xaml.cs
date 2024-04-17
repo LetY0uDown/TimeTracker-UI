@@ -2,24 +2,29 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.ViewModels;
 
 namespace TimeTracker.UI.Views.Pages;
 
-public partial class TaskInfoPage : Page
+public partial class TaskInfoPage : Page, INavigatablePage<TaskInfoViewModel>
 {
     private bool _isStartButtonChecked = false;
 
     public TaskInfoPage (TaskInfoViewModel viewModel)
     {
-        DataContext = viewModel;
-        InitializeComponent();
+        ViewModel = viewModel;
+        DataContext = ViewModel;
     }
 
-    protected override void OnRender (DrawingContext drawingContext)
+    public TaskInfoViewModel ViewModel { get; private set; }
+
+    public void Display ()
     {
-        var vm = DataContext as TaskInfoViewModel;
-        vm.CurrentTask = App.CurrentTask;
+        ViewModel.CurrentTask = App.CurrentTask;
+        ViewModel.Display();
+
+        InitializeComponent();
     }
 
     private void StartButtonClick (object sender, RoutedEventArgs e)
@@ -36,6 +41,7 @@ public partial class TaskInfoPage : Page
             button.Content = "Пауза";
             button.Background = dangerColor;
         }
+
         _isStartButtonChecked = !_isStartButtonChecked;
     }
 }

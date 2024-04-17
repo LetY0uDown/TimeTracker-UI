@@ -12,8 +12,6 @@ public class TrackedTask
 
     public bool IsDone { get; set; }
 
-    public bool IsPaused { get; set; }
-
     public bool HasPlannedTime => PlannedTime is not null;
 
     public List<Timestamp> Timestamps { get; set; } = new List<Timestamp>();

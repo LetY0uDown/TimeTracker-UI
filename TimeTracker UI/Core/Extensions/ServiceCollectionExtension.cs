@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.Services;
 using TimeTracker.UI.Core.ViewModels;
 using TimeTracker.UI.Views;
@@ -16,16 +17,18 @@ internal static class ServiceCollectionExtension
 
     internal static void AddViewModels (this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<NavigationViewModel>();
-        serviceCollection.AddSingleton<TaskListViewModel>();
+        serviceCollection.AddTransient<NavigationViewModel>();
+        serviceCollection.AddTransient<TaskListViewModel>();
         serviceCollection.AddTransient<TaskInfoViewModel>();
+        serviceCollection.AddTransient<TaskCreationViewModel>();
     }
 
     internal static void AddViews(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<MainWindow>();
-        serviceCollection.AddSingleton<TaskCreationPage>();
-        serviceCollection.AddSingleton<TaskInfoPage>();
-        serviceCollection.AddSingleton<TaskListPage>();
+
+        serviceCollection.AddTransient<INavigatablePage<TaskCreationViewModel>, TaskCreationPage>();
+        serviceCollection.AddTransient<INavigatablePage<TaskInfoViewModel>,     TaskInfoPage>();
+        serviceCollection.AddTransient<INavigatablePage<TaskListViewModel>,     TaskListPage>();
     }
 }

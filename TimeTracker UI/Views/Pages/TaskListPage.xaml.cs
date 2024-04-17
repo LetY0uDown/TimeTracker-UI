@@ -1,21 +1,22 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.ViewModels;
-using TimeTracker.UI.Models;
 
 namespace TimeTracker.UI.Views.Pages;
 
-public partial class TaskListPage : Page
+public partial class TaskListPage : Page, INavigatablePage<TaskListViewModel>
 {
     public TaskListPage (TaskListViewModel viewModel)
     {
         DataContext = viewModel;
-        InitializeComponent();
+        ViewModel = viewModel;
     }
 
-    private void ListBox_SelectionChanged (object sender, SelectionChangedEventArgs e)
+    public TaskListViewModel ViewModel { get; private set; }
+
+    public void Display ()
     {
-        // DEBUG
-        //MessageBox.Show((((sender as ListBox)!.SelectedItem) as TrackedTask)?.Title);
+        ViewModel.Display();
+        InitializeComponent();
     }
 }
