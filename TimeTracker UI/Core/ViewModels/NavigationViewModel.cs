@@ -7,7 +7,15 @@ public sealed class NavigationViewModel (NavigationService navigation) : ViewMod
 {
     private readonly NavigationService _navigation = navigation;
 
-    public INavigatablePage<ViewModel> CurrentPage { get; set; } = null!;
+    private INavigatablePage<ViewModel> _currentPage = null!;
+    public INavigatablePage<ViewModel> CurrentPage
+    {
+        get => _currentPage;
+        set {
+            _currentPage = value;
+            _currentPage.Display();
+        }
+    }
 
     public override void Display ()
     {

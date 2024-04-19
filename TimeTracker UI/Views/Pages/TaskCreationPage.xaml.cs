@@ -4,17 +4,13 @@ using TimeTracker.UI.Core.ViewModels;
 
 namespace TimeTracker.UI.Views.Pages;
 
-public partial class TaskCreationPage : Page, INavigatablePage<TaskCreationViewModel>
+public partial class TaskCreationPage (TaskCreationViewModel vm) : Page, INavigatablePage<TaskCreationViewModel>
 {
-    public TaskCreationPage ()
-    {
-        InitializeComponent();
-    }
-
-    public TaskCreationViewModel ViewModel => throw new NotImplementedException();
+    public TaskCreationViewModel ViewModel { get; private set; } = vm;
 
     public void Display ()
     {
-        throw new NotImplementedException();
+        DataContext = ViewModel;
+        InitializeComponent();
     }
 }

@@ -40,7 +40,7 @@ public sealed class TaskInfoViewModel : ViewModel
         //                                                                            : PauseTaskCommand;
 
         ReturnCommand = new(() => {
-            _navigation.SetPage<TaskListPage>();
+            _navigation.SetPage<TaskListViewModel>();
         });
     }
 

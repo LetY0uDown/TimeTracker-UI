@@ -73,7 +73,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             
-            <TextBlock Text="Остановки" VerticalAlignment="Center"
+            <TextBlock Text="Действия" VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        FontSize="32" Foreground="{DynamicResource Foreground}"
                        FontWeight="DemiBold"/>

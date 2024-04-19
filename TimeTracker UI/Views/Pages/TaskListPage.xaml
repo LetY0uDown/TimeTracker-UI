@@ -16,8 +16,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.12*"/>
             <RowDefinition />
+            <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
 
         <RadioButton Content="К Выполнению" Margin="10 5" IsChecked="True"
@@ -41,6 +42,10 @@
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
+
+        <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="15 3"
+                Foreground="{DynamicResource DarkForeground}"
+                Content="Добавить задание" Command="{Binding CreateTaskCommand}"/>
 
     </Grid>
 </Page>

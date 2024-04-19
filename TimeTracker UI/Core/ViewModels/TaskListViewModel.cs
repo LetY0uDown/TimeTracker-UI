@@ -1,7 +1,6 @@
 ﻿using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.Services;
 using TimeTracker.UI.Models;
-using TimeTracker.UI.Views.Pages;
 
 namespace TimeTracker.UI.Core.ViewModels;
 
@@ -23,14 +22,19 @@ public sealed class TaskListViewModel : ViewModel
             Tasks = await _client.GetAsync<List<TrackedTask>>("Tasks/Done");
         });
 
+        CreateTaskCommand = new(() => {
+            _navigation.SetPage<TaskCreationViewModel>();
+        });
+
         ShowSelectedTask = new(() => {
             App.CurrentTask = SelectedTask;
-            _navigation.SetPage<TaskInfoPage>();
+            _navigation.SetPage<TaskInfoViewModel>();
         });
     }
 
     public UICommand ShowTrackedTasksCommand { get; set; }
     public UICommand ShowFinishedTasksCommand { get; set; }
+    public UICommand CreateTaskCommand { get; set; }
 
     public UICommand ShowSelectedTask { get; set; }
 

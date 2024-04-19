@@ -59,10 +59,8 @@ public sealed class APIClient (IConfiguration config)
         return isSuccess;
     }
 
-    public async Task<TResponse?> PostAsync<T, TResponse> (T value, string url) where T : class
+    public async Task PostAsync<T> (T value, string url) where T : class
     {
-        TResponse? resp = default;
-
         using (RestClient client = GetClient()) {
             RestRequest request = new(url, Method.Post);
 
@@ -76,21 +74,15 @@ public sealed class APIClient (IConfiguration config)
                 if (!response.IsSuccessStatusCode) {
                     MessageBox.Show(response.Content, response.StatusCode.ToString());
 
-                    return default;
+                    return;
                 }
-
-                if (string.IsNullOrWhiteSpace(response.Content)) {
-                    return default;
-                }
-
-                resp = JsonSerializer.Deserialize<TResponse>(response.Content, _jsonOptions);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "Ошибка");
             }
         }
 
-        return resp;
+        return;
     }
 
     public async Task PutAsync (string url)

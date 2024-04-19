@@ -8,6 +8,7 @@ public partial class MainWindow : Window
     public MainWindow (NavigationViewModel viewModel)
     {
         DataContext = viewModel;
+        viewModel.Display();
         InitializeComponent();
     }
 
