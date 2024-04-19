@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:TimeTracker.UI.Core.Converters"
+                    xmlns:model="clr-namespace:TimeTracker.UI.Models">
+
+    <converter:TicksToTimeConverter x:Key="TicksToTime" />
+
+    <DataTemplate DataType="{x:Type model:TaskAction}" x:Key="ActionTemplate">
+        <Grid HorizontalAlignment="Stretch" Margin="15">
+            <StackPanel>
+                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource TicksToTime}, ConverterParameter=true}"
+                           FontSize="18" Foreground="{DynamicResource Foreground}"/>
+                
+                <TextBlock Text="{Binding Type.Title}" FontSize="18" Foreground="{DynamicResource Foreground}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
