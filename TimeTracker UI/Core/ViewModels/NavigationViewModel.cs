@@ -12,7 +12,7 @@ public sealed class NavigationViewModel (NavigationService navigation) : ViewMod
     {
         get => _currentPage;
         set {
-            _currentPage?.ViewModel?.Exit();
+            _currentPage?.ViewModel.Exit();
             _currentPage = value;
             _currentPage.Display();
         }

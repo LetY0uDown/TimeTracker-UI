@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 using System.Windows;
 using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.Services;
@@ -24,8 +23,10 @@ public sealed class TaskInfoViewModel : ViewModel
 
         FinishTaskCommand = new(async () => {
             await _client.PutAsync($"Tasks/{CurrentTask.Id}/finish");
-            _navigation.SetView<TaskListViewModel> ();
-        }, () => !CurrentTask.IsDone);
+            _navigation.SetView<TaskListViewModel>();
+
+            // Условие, при котором кнопка активна
+        }, () => !CurrentTask.IsDone && Actions?.Any() == true);
 
         PauseTaskCommand = new(async () => {
             await _client.PutAsync($"Tasks/{CurrentTask.Id}/pause");
@@ -79,11 +80,10 @@ public sealed class TaskInfoViewModel : ViewModel
 
             StartStopCommand = GetStartStopCommand();
 
-            var actionTypeId = Actions.Any() ? Actions[^1]!.Type!.Id : TaskActionType.Kind.Start;
+            var actionTypeId = Actions.Any() ? Actions[^1]!.Type!.Id : TaskActionType.Kind.None;
 
             OnTaskUpdated(actionTypeId);
         });
-
     }
 
     public override async void Exit ()

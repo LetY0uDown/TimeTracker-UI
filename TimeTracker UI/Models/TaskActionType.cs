@@ -8,6 +8,6 @@ public sealed class TaskActionType
 
     public enum Kind
     {
-        Start, Pause, Resume, Finish
+        Start, Pause, Resume, Finish, None
     }
 }
