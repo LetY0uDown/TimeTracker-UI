@@ -57,12 +57,14 @@
                 </Grid>
             </Border>
 
-            <ToggleButton Grid.Row="2" Margin="20 10"
-                          Content="Начать" Style="{StaticResource MaterialDesignRaisedButton}"
-                          Click="StartButtonClick" BorderThickness="0"/>
+            <Button Grid.Row="2" Margin="20 10"
+                    x:Name="StartStopButton" BorderThickness="0"
+                    Command="{Binding StartStopCommand}"/>
                 
             <Button Grid.Row="2" Grid.Column="1" Margin="20 10"
-                    Content="Выполнено" Background="{DynamicResource Success}" BorderThickness="0"/>
+                    Command="{Binding FinishTaskCommand}"
+                    Content="Выполнено" Background="{DynamicResource Success}"
+                    BorderThickness="0"/>
 
         </Grid>
 

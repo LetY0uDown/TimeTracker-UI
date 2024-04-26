@@ -1,47 +1,56 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using TimeTracker.UI.Core.Navigation;
 using TimeTracker.UI.Core.ViewModels;
+using TimeTracker.UI.Models;
 
 namespace TimeTracker.UI.Views.Pages;
 
-public partial class TaskInfoPage : Page, INavigatablePage<TaskInfoViewModel>
+public partial class TaskInfoPage (TaskInfoViewModel viewModel) : Page, INavigatablePage<TaskInfoViewModel>
 {
-    private bool _isStartButtonChecked = false;
-
-    public TaskInfoPage (TaskInfoViewModel viewModel)
-    {
-        ViewModel = viewModel;
-        DataContext = ViewModel;
-    }
-
-    public TaskInfoViewModel ViewModel { get; private set; }
+    public TaskInfoViewModel ViewModel { get; private set; } = viewModel;
 
     public void Display ()
     {
+        DataContext = ViewModel;
+
+        ViewModel.OnTaskUpdated += UpdateButton;
         ViewModel.CurrentTask = App.CurrentTask;
-        ViewModel.Display();
 
         InitializeComponent();
+
+        ViewModel.Display();
     }
 
-    private void StartButtonClick (object sender, RoutedEventArgs e)
+    private void UpdateButton (TaskActionType.Kind prevActionKind)
     {
-        var button = (sender as ToggleButton)!;
-
         var dangerColor = Application.Current.FindResource("Danger") as SolidColorBrush;
         var primaryColor = Application.Current.FindResource("Primary") as SolidColorBrush;
+        var successColor = Application.Current.FindResource("Success") as SolidColorBrush;
 
-        if (_isStartButtonChecked) {
-            button.Content = "Начать";
-            button.Background = primaryColor;
-        } else {
-            button.Content = "Пауза";
-            button.Background = dangerColor;
-        }
+        Application.Current.Dispatcher.Invoke(() => {
+            switch (prevActionKind) {
+                case TaskActionType.Kind.Start:
+                    StartStopButton.Content = "Пауза";
+                    StartStopButton.Background = dangerColor;
+                break;
 
-        _isStartButtonChecked = !_isStartButtonChecked;
+                case TaskActionType.Kind.Pause:
+                    StartStopButton.Content = "Продолжить";
+                    StartStopButton.Background = primaryColor;
+                break;
+
+                case TaskActionType.Kind.Resume:
+                    StartStopButton.Content = "Пауза";
+                    StartStopButton.Background = dangerColor;
+                break;
+
+                default:
+                    StartStopButton.Content = "Начать";
+                    StartStopButton.Background = successColor;
+                break;
+            }
+        });
     }
 }

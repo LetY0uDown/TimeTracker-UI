@@ -22,7 +22,7 @@ public sealed class NavigationService
         MainWindow.Show();
     }
 
-    public void SetPage<T> () where T : ViewModel
+    public void SetView<T> () where T : ViewModel
     {
         _navigation.CurrentPage = App.Host.Services.GetService<INavigatablePage<T>>()!;
     }

@@ -30,7 +30,7 @@ public sealed class TaskCreationViewModel : ViewModel
         }, () => !string.IsNullOrWhiteSpace(Title));
 
         ReturnCommand = new(() => {
-            _navigation.SetPage<TaskListViewModel>();
+            _navigation.SetView<TaskListViewModel>();
         });
     }
 

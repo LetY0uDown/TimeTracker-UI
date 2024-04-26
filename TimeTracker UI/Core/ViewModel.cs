@@ -9,6 +9,8 @@ public abstract class ViewModel : INotifyPropertyChanged
 
     public abstract void Display ();
 
+    public virtual void Exit() { }
+
     [Obsolete("Should be called automaticly with Fody nuget package")]
     protected void OnPropertyChanged ([CallerMemberName] string? name = null)
     {

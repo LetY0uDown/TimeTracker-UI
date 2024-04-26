@@ -13,6 +13,8 @@ internal static class ServiceCollectionExtension
     {
         serviceCollection.AddSingleton<APIClient>();
         serviceCollection.AddSingleton<NavigationService>();
+
+        serviceCollection.AddTransient<IHubFactory, HubFactory>();
     }
 
     internal static void AddViewModels (this IServiceCollection serviceCollection)
