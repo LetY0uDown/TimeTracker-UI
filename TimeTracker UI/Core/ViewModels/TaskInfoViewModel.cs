@@ -13,7 +13,7 @@ public sealed class TaskInfoViewModel : ViewModel
     private readonly NavigationService _navigation;
     private readonly IHubFactory _hubFactory;
 
-    private HubConnection _hub;
+    private HubConnection _hub = null!;
 
     public TaskInfoViewModel (APIClient client, NavigationService navigation, IHubFactory hubFactory)
     {
@@ -46,12 +46,19 @@ public sealed class TaskInfoViewModel : ViewModel
         ReturnCommand = new(() => {
             _navigation.SetView<TaskListViewModel>();
         });
+
+        BlockCommand = new(() => { }, () => false);
     }
+
+    public TimeSpan TimeSpentOnTask { get; private set; }
 
     /// <summary>
     /// Вызывается при совершении каких-то действий над задачкой. Нужно для обновления UI
     /// </summary>
-    public Action<TaskActionType.Kind> OnTaskUpdated { get; set; }
+    public Action<TaskActionType.Kind> OnTaskUpdated { get; set; } = null!;
+
+    // Нужна чтобы блокировать кнопку
+    public UICommand BlockCommand { get; private init; }
 
     public UICommand FinishTaskCommand { get; private init; }
 
@@ -82,6 +89,8 @@ public sealed class TaskInfoViewModel : ViewModel
 
             var actionTypeId = Actions.Any() ? Actions[^1]!.Type!.Id : TaskActionType.Kind.None;
 
+            TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(Actions.ToList());
+
             OnTaskUpdated(actionTypeId);
         });
     }
@@ -91,7 +100,7 @@ public sealed class TaskInfoViewModel : ViewModel
         await _hub.StopAsync();
     }
 
-    private UICommand? GetStartStopCommand ()
+    private UICommand GetStartStopCommand ()
     {
         // Если нет никаких действий, значит задачку можно только начать
         if (Actions.Count == 0) {
@@ -104,7 +113,7 @@ public sealed class TaskInfoViewModel : ViewModel
         return Actions[^1]!.Type!.Id switch {
             TaskActionType.Kind.Pause => ResumeTaskCommand,
             TaskActionType.Kind.Resume or TaskActionType.Kind.Start => PauseTaskCommand,
-            _ => null
+            _ => BlockCommand
         };
     }
 
@@ -119,6 +128,8 @@ public sealed class TaskInfoViewModel : ViewModel
             Application.Current.Dispatcher.Invoke(() => {
                 Actions?.Add(action);
             });
+
+            TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(Actions.ToList());
 
             StartStopCommand = GetStartStopCommand();
 

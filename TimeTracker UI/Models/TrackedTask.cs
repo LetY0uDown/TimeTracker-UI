@@ -10,9 +10,6 @@ public sealed class TrackedTask
 
     public long? PlannedTime { get; set; }
 
-    // prob temporary
-    public bool HasPlannedTime => PlannedTime != null;
-
     public bool IsDone { get; set; }
 
     public List<TaskAction> Actions { get; set; } = new List<TaskAction>();

@@ -43,6 +43,9 @@ internal static class WorkTimeCounter
             lastAction = action;
         }
 
-        return new (totalTime);
+        TimeSpan time = new (totalTime);
+
+        // Создаём новые экземплер чтобы "округлить" время и избавиться от лишних микросекунд
+        return new(time.Hours, time.Minutes, time.Seconds);
     }
 }

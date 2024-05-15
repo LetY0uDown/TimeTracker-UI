@@ -5,11 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:icon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
       xmlns:vm="clr-namespace:TimeTracker.UI.Core.ViewModels"
+      xmlns:convertor="clr-namespace:TimeTracker.UI.Core.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="850"
       Title="TaskInfoPage"
       d:DataContext="{d:DesignInstance Type={x:Type vm:TaskInfoViewModel}}">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <convertor:TicksToTimeConverter x:Key="TicksToTime" />
+        </ResourceDictionary>
+    </Page.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -41,18 +48,34 @@
                     Grid.RowSpan="2" Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.25*"/>
+                        <RowDefinition Height="0.12*"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     
                     <TextBlock Text="{Binding CurrentTask.Title}" HorizontalAlignment="Center"
-                               Margin="0 20 0 0" FontSize="32"
+                               Margin="0 20 0 0" FontSize="32" Grid.Row="0"
                                Foreground="{DynamicResource Foreground}"
                                FontWeight="DemiBold"/>
 
+                    <StackPanel Grid.Row="1" >
+                        <TextBlock Text="{Binding CurrentTask.PlannedTime,
+                                                  StringFormat=Планируется сделать за: {0},
+                                                  Converter={StaticResource TicksToTime}}"
+                                   Foreground="{DynamicResource Foreground}"
+                                   Margin="10 0" VerticalAlignment="Center"
+                                   FontSize="16"/>
+
+                        <TextBlock Text="{Binding TimeSpentOnTask,
+                                                  StringFormat=Потрачено времени: {0}}"
+                                   Margin="10 0" VerticalAlignment="Center"
+                                   x:Name="planTimeTB"
+                                   FontSize="16" Foreground="{DynamicResource Foreground}"/>
+                    </StackPanel>
+
                     <TextBlock Text="{Binding CurrentTask.Description}"
                                Foreground="{DynamicResource Foreground}"
-                               Margin="15" Grid.Row="1"
+                               Margin="15" Grid.Row="2"
                                FontSize="18" TextWrapping="Wrap"/>
                 </Grid>
             </Border>
