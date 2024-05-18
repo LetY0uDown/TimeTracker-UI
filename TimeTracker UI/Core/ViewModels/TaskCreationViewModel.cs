@@ -7,12 +7,13 @@ namespace TimeTracker.UI.Core.ViewModels;
 public sealed class TaskCreationViewModel : ViewModel
 {
     private readonly APIClient _client;
-    private readonly NavigationService _navigation;
+    private readonly IPageHost _navigation;
 
-    public TaskCreationViewModel(APIClient client, NavigationService navigation)
+    public TaskCreationViewModel(APIClient client, IPageHost navigation)
     {
         _client = client;
         _navigation = navigation;
+
         CreateTaskCommand = new(async () => {
             TimeSpan? plan = TimeSpan.Parse($"{Hours}:{Minutes}");
             var task = new TrackedTask {
@@ -30,7 +31,7 @@ public sealed class TaskCreationViewModel : ViewModel
         }, () => !string.IsNullOrWhiteSpace(Title));
 
         ReturnCommand = new(() => {
-            _navigation.SetView<TaskListViewModel>();
+            _navigation.NavigateToView<TaskListViewModel>();
         });
     }
 
@@ -42,12 +43,14 @@ public sealed class TaskCreationViewModel : ViewModel
 
     public UICommand CreateTaskCommand { get; private init; }
     public UICommand ReturnCommand { get; private init; }
-
-    public override void Display ()
+    
+    public override Task InitializeAsync ()
     {
         Title = string.Empty;
         Description = string.Empty;
         Hours = 0;
         Minutes = 0;
+
+        return Task.CompletedTask;
     }
 }

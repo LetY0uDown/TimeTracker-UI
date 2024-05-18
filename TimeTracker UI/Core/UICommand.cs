@@ -25,11 +25,18 @@ public sealed class UICommand : ICommand
         remove => CommandManager.RequerySuggested -= value;
     }
 
+    /// <summary>
+    /// Проверяет, может ли команда быть выполнена
+    /// </summary>
     public bool CanExecute (object? parameter)
     {
         return _canExecute is null || _canExecute();
     }
 
+    /// <summary>
+    /// Выполняет команду
+    /// </summary>
+    /// <param name="parameter"></param>
     public void Execute (object? parameter)
     {
         _execute();

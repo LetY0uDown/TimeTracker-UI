@@ -7,9 +7,9 @@ public abstract class ViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public abstract void Display ();
+    public abstract Task InitializeAsync ();
 
-    public virtual void Exit() { }
+    public virtual Task StopAsync() { return Task.CompletedTask; }
 
     [Obsolete("Should be called automaticly with Fody nuget package")]
     protected void OnPropertyChanged ([CallerMemberName] string? name = null)

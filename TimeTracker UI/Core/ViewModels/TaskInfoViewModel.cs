@@ -10,12 +10,15 @@ namespace TimeTracker.UI.Core.ViewModels;
 public sealed class TaskInfoViewModel : ViewModel
 {
     private readonly APIClient _client;
-    private readonly NavigationService _navigation;
+    private readonly IPageHost _navigation;
     private readonly IHubFactory _hubFactory;
 
     private HubConnection _hub = null!;
 
-    public TaskInfoViewModel (APIClient client, NavigationService navigation, IHubFactory hubFactory)
+    [Parameter("Task ID")]
+    private int _taskID = 0;
+
+    public TaskInfoViewModel (APIClient client, IPageHost navigation, IHubFactory hubFactory)
     {
         _client = client;
         _navigation = navigation;
@@ -23,10 +26,10 @@ public sealed class TaskInfoViewModel : ViewModel
 
         FinishTaskCommand = new(async () => {
             await _client.PutAsync($"Tasks/{CurrentTask.Id}/finish");
-            _navigation.SetView<TaskListViewModel>();
+            _navigation.NavigateToView<TaskListViewModel>();
 
             // Условие, при котором кнопка активна
-        }, () => !CurrentTask.IsDone && Actions?.Any() == true);
+        }, () => !CurrentTask.IsDone && CurrentTask.Actions?.Any() == true);
 
         PauseTaskCommand = new(async () => {
             await _client.PutAsync($"Tasks/{CurrentTask.Id}/pause");
@@ -44,10 +47,10 @@ public sealed class TaskInfoViewModel : ViewModel
         }, () => !CurrentTask.IsDone);
 
         ReturnCommand = new(() => {
-            _navigation.SetView<TaskListViewModel>();
+            _navigation.NavigateToView<TaskListViewModel>();
         });
 
-        BlockCommand = new(() => { }, () => false);
+        BlockCommand = new(() => { /* Пусто */ }, () => false);
     }
 
     public TimeSpan TimeSpentOnTask { get; private set; }
@@ -57,7 +60,9 @@ public sealed class TaskInfoViewModel : ViewModel
     /// </summary>
     public Action<TaskActionType.Kind> OnTaskUpdated { get; set; } = null!;
 
-    // Нужна чтобы блокировать кнопку
+    /// <summary>
+    /// Нужна чтобы блокировать кнопку
+    /// </summary>
     public UICommand BlockCommand { get; private init; }
 
     public UICommand FinishTaskCommand { get; private init; }
@@ -68,34 +73,36 @@ public sealed class TaskInfoViewModel : ViewModel
 
     /// <summary>
     /// Команда для совершения действий (Начать / Пауза / Продолжить), меняется зависимо от статуса задачи
-    /// Привязана к UI
     /// </summary>
     public UICommand? StartStopCommand { get; private set; } = null!;
 
     public UICommand ReturnCommand { get; private set; }
 
-    public TrackedTask CurrentTask { get; set; } = new();
-    public ObservableCollection<TaskAction> Actions { get; private set; } = null!;
+    public TrackedTask? CurrentTask { get; set; } = new();
 
-    public override void Display ()
+    public override async Task InitializeAsync ()
     {
-        ConfigureHub();
+        await ConfigureHubAsync();
 
-        Task.Run(async () => {
-            Actions = new((await _client.GetAsync<List<TaskAction>>($"Tasks/{CurrentTask.Id}/actions"))!
-                                         .OrderBy(action => action.Id))!;
+        CurrentTask = await _client.GetAsync<TrackedTask>($"Tasks/{_taskID}");
 
-            StartStopCommand = GetStartStopCommand();
+        if (CurrentTask is null) {
+            MessageBox.Show("Такая задачка не найдена. Обратитесь к программисту");
+            _navigation.NavigateToView<TaskListViewModel>();
+            return;
+        }
 
-            var actionTypeId = Actions.Any() ? Actions[^1]!.Type!.Id : TaskActionType.Kind.None;
+        StartStopCommand = GetStartStopCommand();
 
-            TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(Actions.ToList());
+        var actionTypeId = CurrentTask.Actions.Any() ? CurrentTask.Actions[^1]!.Type!.Id
+                                                     : TaskActionType.Kind.None;
 
-            OnTaskUpdated(actionTypeId);
-        });
+        TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(CurrentTask.Actions.ToList());
+
+        OnTaskUpdated(actionTypeId);
     }
 
-    public override async void Exit ()
+    public override async Task StopAsync ()
     {
         await _hub.StopAsync();
     }
@@ -103,37 +110,33 @@ public sealed class TaskInfoViewModel : ViewModel
     private UICommand GetStartStopCommand ()
     {
         // Если нет никаких действий, значит задачку можно только начать
-        if (Actions.Count == 0) {
+        if (CurrentTask!.Actions.Count == 0) {
             return StartTaskCommand;
         }
 
         // Смотрим какое действие было последним
         // и возвращаем комманду для действия
         // которое может идти после
-        return Actions[^1]!.Type!.Id switch {
+        return CurrentTask.Actions[^1]!.Type!.Id switch {
             TaskActionType.Kind.Pause => ResumeTaskCommand,
             TaskActionType.Kind.Resume or TaskActionType.Kind.Start => PauseTaskCommand,
             _ => BlockCommand
         };
     }
 
-    private void ConfigureHub ()
+    private async Task ConfigureHubAsync ()
     {
         _hub = _hubFactory.CreateHub();
-        Task.Run(async () => await _hub.StartAsync());
+        await _hub.StartAsync();
 
         _hub.On<TaskAction>("TaskStateUpdated", action => {
-            // Методы, работающие с UI приходится вызывать через Dispatcher,
-            // т.к. WPF очень не любит, когда с ним работают из разных потоков
-            Application.Current.Dispatcher.Invoke(() => {
-                Actions?.Add(action);
-            });
+            App.ExecuteSync(() => CurrentTask!.Actions?.Add(action));
 
-            TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(Actions.ToList());
+            TimeSpentOnTask = WorkTimeCounter.CalculateWorkTime(CurrentTask!.Actions.ToList());
 
             StartStopCommand = GetStartStopCommand();
 
-            OnTaskUpdated(Actions![^1].Type!.Id);
+            OnTaskUpdated(CurrentTask.Actions![^1].Type!.Id);
         });
     }
 }

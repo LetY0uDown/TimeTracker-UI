@@ -9,14 +9,14 @@ namespace TimeTracker.UI.Core.ViewModels;
 public sealed class TaskListViewModel : ViewModel
 {
     private readonly APIClient _client;
-    private readonly NavigationService _navigation;
+    private readonly IPageHost _navigation;
     private readonly IHubFactory _hubFactory;
 
-    private HubConnection _hub;
+    private HubConnection _hub = null!;
 
     private bool _showingFinished = false;
 
-    public TaskListViewModel (APIClient client, NavigationService navigation, IHubFactory hubFactory)
+    public TaskListViewModel (APIClient client, IPageHost navigation, IHubFactory hubFactory)
     {
         _client = client;
         _navigation = navigation;
@@ -33,13 +33,12 @@ public sealed class TaskListViewModel : ViewModel
         });
 
         CreateTaskCommand = new(() => {
-            _navigation.SetView<TaskCreationViewModel>();
+            _navigation.NavigateToView<TaskCreationViewModel>();
         });
 
         ShowSelectedTask = new(() => {
-            App.CurrentTask = SelectedTask;
-            _navigation.SetView<TaskInfoViewModel>();
-        });
+            _navigation.NavigateToView<TaskInfoViewModel>((SelectedTask!.Id, "Task ID"));
+        }, () => SelectedTask is not null);
     }
 
     public UICommand ShowTrackedTasksCommand { get; set; }
@@ -52,24 +51,22 @@ public sealed class TaskListViewModel : ViewModel
 
     public ObservableCollection<TrackedTask>? Tasks { get; set; }
 
-    public override void Display ()
+    public override async Task InitializeAsync ()
     {
-        Task.Run(async () => {
-            Tasks = await _client.GetAsync<ObservableCollection<TrackedTask>>("Tasks");
-        });
+        Tasks = await _client.GetAsync<ObservableCollection<TrackedTask>>("Tasks");
 
-        ConfigureHub();
+        await ConfigureHub();
     }
 
-    public override async void Exit ()
+    public override async Task StopAsync ()
     {
         await _hub.StopAsync();
     }
 
-    private void ConfigureHub ()
+    private async Task ConfigureHub ()
     {
         _hub = _hubFactory.CreateHub();
-        Task.Run(async () => await _hub.StartAsync());
+        await _hub.StartAsync();
 
         _hub.On<TrackedTask>("TaskPosted", task => {
             // Добавляем новую задачку в список только если смотрим незавершённые задачи

@@ -46,7 +46,7 @@
             </Grid>
 
             <Grid Grid.Row="1" Background="{DynamicResource Background}">
-                <Frame Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" />
+                <Frame Content="{Binding CurrentView}" NavigationUIVisibility="Hidden" />
             </Grid>
 
         </Grid>

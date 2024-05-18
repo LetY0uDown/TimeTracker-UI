@@ -1,26 +1,38 @@
-﻿using TimeTracker.UI.Core.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TimeTracker.UI.Core.Navigation;
 
 namespace TimeTracker.UI.Core.ViewModels;
 
-public sealed class NavigationViewModel (NavigationService navigation) : ViewModel
+public sealed class NavigationViewModel : ViewModel, IPageHost
 {
-    private readonly NavigationService _navigation = navigation;
+    public IView<ViewModel> CurrentView { get; private set; } = null!;
 
-    private INavigatablePage<ViewModel> _currentPage = null!;
-    public INavigatablePage<ViewModel> CurrentPage
+    public void NavigateToView<T> () where T : ViewModel
     {
-        get => _currentPage;
-        set {
-            _currentPage?.ViewModel.Exit();
-            _currentPage = value;
-            _currentPage.Display();
+        if (CurrentView is not null) {
+            CurrentView.Exit();
         }
+
+        CurrentView = App.Container.Services.GetRequiredService<IView<T>>();
+
+        CurrentView.Display();
     }
 
-    public override void Display ()
+    public void NavigateToView<T> (params (object value, string fieldName)[] parameters) where T : ViewModel
     {
-        CurrentPage = App.Host.Services.GetPage<TaskListViewModel>()!;
-        _navigation.RegisterHost(this);
+        if (CurrentView is not null) {
+            CurrentView.Exit();
+        }
+        
+        CurrentView = App.Container.Services.GetRequiredService<IView<T>>();
+
+        PropertiesSetter.SetParameters(CurrentView.ViewModel, parameters);
+
+        CurrentView.Display();
+    }
+
+    public override Task InitializeAsync ()
+    {
+        return Task.CompletedTask;
     }
 }

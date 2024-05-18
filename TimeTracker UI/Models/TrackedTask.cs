@@ -1,4 +1,6 @@
-﻿namespace TimeTracker.UI.Models;
+﻿using System.Collections.ObjectModel;
+
+namespace TimeTracker.UI.Models;
 
 public sealed class TrackedTask
 {
@@ -12,5 +14,5 @@ public sealed class TrackedTask
 
     public bool IsDone { get; set; }
 
-    public List<TaskAction> Actions { get; set; } = new List<TaskAction>();
+    public ObservableCollection<TaskAction> Actions { get; set; } = new ();
 }

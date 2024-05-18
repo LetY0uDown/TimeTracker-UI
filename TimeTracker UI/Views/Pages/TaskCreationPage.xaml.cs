@@ -4,13 +4,19 @@ using TimeTracker.UI.Core.ViewModels;
 
 namespace TimeTracker.UI.Views.Pages;
 
-public partial class TaskCreationPage (TaskCreationViewModel vm) : Page, INavigatablePage<TaskCreationViewModel>
+public partial class TaskCreationPage (TaskCreationViewModel vm) : Page, IView<TaskCreationViewModel>
 {
     public TaskCreationViewModel ViewModel { get; private set; } = vm;
 
-    public void Display ()
+    public void Display () {
+        Task.Run(ViewModel.InitializeAsync);
+
+         DataContext = ViewModel;
+         InitializeComponent();
+    }
+
+    public void Exit ()
     {
-        DataContext = ViewModel;
-        InitializeComponent();
+        Task.Run(ViewModel.StopAsync);
     }
 }

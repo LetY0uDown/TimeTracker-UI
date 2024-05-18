@@ -4,6 +4,11 @@ namespace TimeTracker.UI.Core;
 
 internal static class WorkTimeCounter
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="actions">Действия, произведённые над задачаей</param>
+    /// <returns>Время работы над задачей</returns>
     public static TimeSpan CalculateWorkTime (List<TaskAction> actions)
     {
         // Если нет действий, то время = ноль

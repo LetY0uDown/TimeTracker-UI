@@ -12,14 +12,13 @@ internal static class ServiceCollectionExtension
     internal static void AddServices (this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<APIClient>();
-        serviceCollection.AddSingleton<NavigationService>();
+        serviceCollection.AddSingleton<IPageHost, NavigationViewModel>();
 
         serviceCollection.AddTransient<IHubFactory, HubFactory>();
     }
 
     internal static void AddViewModels (this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddTransient<NavigationViewModel>();
         serviceCollection.AddTransient<TaskListViewModel>();
         serviceCollection.AddTransient<TaskInfoViewModel>();
         serviceCollection.AddTransient<TaskCreationViewModel>();
@@ -27,10 +26,10 @@ internal static class ServiceCollectionExtension
 
     internal static void AddViews(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<MainWindow>();
+        serviceCollection.AddSingleton<IView<NavigationViewModel>, MainWindow>();
 
-        serviceCollection.AddTransient<INavigatablePage<TaskCreationViewModel>, TaskCreationPage>();
-        serviceCollection.AddTransient<INavigatablePage<TaskInfoViewModel>,     TaskInfoPage>();
-        serviceCollection.AddTransient<INavigatablePage<TaskListViewModel>,     TaskListPage>();
+        serviceCollection.AddTransient<IView<TaskCreationViewModel>, TaskCreationPage>();
+        serviceCollection.AddTransient<IView<TaskInfoViewModel>,     TaskInfoPage>();
+        serviceCollection.AddTransient<IView<TaskListViewModel>,     TaskListPage>();
     }
 }
